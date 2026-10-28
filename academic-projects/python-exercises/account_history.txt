@@ -1,0 +1,5 @@
+New account, balance: <567.0>
+Deposit <34.0>, balance: <598.0>
+Withdraw <562.0>, balance: <33.0>
+Deposit <234567.0>, balance: <234597.0>
+New account, balance: <345.0>

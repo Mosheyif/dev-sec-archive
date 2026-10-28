@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Moshe Yifrah </title>
+</head>
+
+<body>
+
+<h1> Moshe Yifrah <br> mosheyif@edu.hac.ac.il <br> Fourth year </h1>
+
+<figure>
+
+    <a href="https://www.jerusalem.muni.il/">
+        <img src="images/city.jpeg" width="37%" alt = "Jerusalem">
+    </a>
+
+    <figcaption> The amazing view in the city of Jerusalem </figcaption>
+
+</figure>
+
+<h1>The courses of this year:</h1>
+
+<ul>
+    <li>Web programing</li>
+    <li>Logics</li>
+    <li>Python</li>
+    <li>Web design</li>
+    <li>Final project</li>
+</ul>
+
+
+<h1>Hobbies:</h1>
+<p>Traveling everywhere in the world</p>
+<p>Swimming and diving in the open sea</p>
+<p>Riding motorcycles and driving big cars</p>
+<p>Watching Netflix and having a quality time</p>
+
+<h1>Registration</h1>
+<form>
+    <p><label for="courseName">Course Name:</label>
+    <input type="text" pattern="[a-zA-Z]*" id="courseName" required title="Letters only"></p>
+    <p><label for="courseNumber">Course Number:</label>
+        <input type="text" id="courseNumber" pattern="\d{9}" minlength="9" maxlength="9" required title="9 digits only"></p>
+    <label for="yearOfStudies">Year Of Studies:</label>
+    <select id="yearOfStudies">
+        <option value="1">Year 1</option>
+        <option value="2">Year 2</option>
+        <option value="3" selected>Year 3</option>
+        <option value="4">Year 4</option>
+    </select>
+    <p>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+    </p>
+</form>
+
+<a href="result.html">Result Page</a>
+
+</body>
+
+</html>

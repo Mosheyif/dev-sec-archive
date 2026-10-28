@@ -1,0 +1,43 @@
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated output (python-exercises)
+python-exercises/primes.txt
+python-exercises/output_csv_files/
+
+# ── Java ──────────────────────────────────────────────────────────────────────
+*.class
+out/
+target/
+
+# Generated reports (java-log-analyzer)
+java-log-analyzer/log_report.json
+java-log-analyzer/test_report.json
+
+# ── C++ ───────────────────────────────────────────────────────────────────────
+build/
+cmake-build-*/
+*.o
+*.a
+*.out
+*.exe
+
+# ── C# ────────────────────────────────────────────────────────────────────────
+[Bb]in/
+[Oo]bj/
+.vs/
+packages/
+*.user
