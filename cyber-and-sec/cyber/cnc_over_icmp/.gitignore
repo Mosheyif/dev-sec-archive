@@ -1,0 +1,40 @@
+# ── Secrets & keys ────────────────────────────────────────────────────────────
+*.pem
+*.key
+server/.env.server
+
+# ── Exfiltrated files (written at runtime by the server) ──────────────────────
+server/received_files/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+
+# ── Python bytecode ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyd
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Package build artifacts ───────────────────────────────────────────────────
+*.egg-info/
+dist/
+build/
+
+# ── Test & coverage artifacts ─────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

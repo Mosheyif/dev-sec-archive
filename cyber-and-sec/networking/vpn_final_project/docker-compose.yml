@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  vpn_server:
+    build: .
+    container_name: vpn_server
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    sysctls:
+      - net.ipv4.ip_forward=1
+    command: ./bin/vpn_server 8080 keys/shared.key tun0 10.8.0.1 10.8.0.0/24
+    networks:
+      vpn_net:
+        ipv4_address: 172.20.0.2
+
+  vpn_client:
+    build: .
+    container_name: vpn_client
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    command: sleep infinity
+    networks:
+      vpn_net:
+        ipv4_address: 172.20.0.3
+
+networks:
+  vpn_net:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

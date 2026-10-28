@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        body { background-color: #f8f9fa; }
+        .weather-card { border-radius: 1rem; border: none; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6 text-center">
+            <h1 class="mb-4">Weather Forecast 🌍</h1>
+            <form method="POST" class="d-flex shadow-sm rounded">
+                <input type="text" name="location" aria-label="location" class="form-control form-control-lg border-0"
+                       placeholder="Enter a city or a country name..." required>
+                <button type="submit" class="btn btn-primary btn-lg px-4">Search</button>
+            </form>
+        </div>
+    </div>
+
+    {% if location and not weather %}
+    <div class="alert alert-danger text-center mx-auto" style="max-width: 500px;" role="alert">
+        No data found for "<strong>{{ location }}</strong>". Please check the spelling and try again.
+    </div>
+    {% endif %}
+
+    {% if weather %}
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-4">
+            <div class="card weather-card shadow text-center p-4">
+                <h2 class="card-title display-6 mb-3">{{ weather.city }}</h2>
+
+                <div class="display-1 mb-3">
+                    {% if weather.is_day_now %}
+                        <i class="bi bi-sun-fill text-warning"></i>
+                    {% else %}
+                        <i class="bi bi-moon-stars-fill text-secondary"></i>
+                    {% endif %}
+                </div>
+
+                <h1 class="display-2 fw-bold text-dark">{{ weather.temp_now }}°</h1>
+                <p class="text-muted fs-5 mt-2">
+                    <i class="bi bi-droplet-fill text-info"></i> Humidity: {{ weather.humidity_now }}%
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="text-center text-muted mb-4">Upcoming Forecast</h4>
+    <div class="row justify-content-center g-3">
+        {% for day in weather.forecast %}
+        <div class="col-6 col-md-2">
+            <div class="card weather-card shadow-sm h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title mb-0">{{ day.day }}</h5>
+                    <small class="text-muted">{{ day.date }}</small>
+
+                    <div class="my-3">
+                        <span class="fs-4 text-danger fw-bold">{{ day.high_temp }}°</span>
+                        <span class="fs-5 text-primary">/ {{ day.low_temp }}°</span>
+                    </div>
+
+                    <div class="text-muted small">
+                        <i class="bi bi-droplet text-info"></i> {{ day.humidity }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

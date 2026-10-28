@@ -1,0 +1,15 @@
+blinker
+certifi
+charset-normalizer
+click
+Flask
+googlemaps
+idna
+itsdangerous
+Jinja2
+MarkupSafe
+python-dotenv
+requests
+urllib3
+Werkzeug
+gunicorn

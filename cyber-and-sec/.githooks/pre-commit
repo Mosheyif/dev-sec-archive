@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Pre-commit hook: auto-formats staged Python (black) and C/H (clang-format),
+# then lints Python with pylint (blocks commit if score < PYLINT_MIN_SCORE).
+# Formatted files are re-staged automatically so the commit is always clean.
+
+set -euo pipefail
+
+PYLINT_MIN_SCORE=7.0
+LOCAL_BIN="$HOME/.local/bin"
+
+pass() { echo "  [ok] $*"; }
+warn() { echo "  [!]  $*" >&2; }
+fail() { echo "  [x]  $*" >&2; }
+
+# Collect staged source files by type (empty string if none)
+PY_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.py$' || true)
+C_FILES=$(git diff --cached  --name-only --diff-filter=ACMR | grep -E '\.(c|h)$' || true)
+
+# ── black: auto-format Python ─────────────────────────────────────────────────
+if [ -n "$PY_FILES" ]; then
+    BLACK=$(command -v black || command -v "$LOCAL_BIN/black" || true)
+    if [ -n "$BLACK" ]; then
+        echo "[pre-commit] black — formatting Python..."
+        mapfile -t py_arr <<< "$PY_FILES"
+        "$BLACK" "${py_arr[@]}"
+        git add "${py_arr[@]}"
+        pass "black"
+    else
+        warn "black not found — skipping Python formatting"
+        warn "Install with: pip3 install --break-system-packages black"
+    fi
+fi
+
+# ── clang-format: auto-format C/H ────────────────────────────────────────────
+if [ -n "$C_FILES" ]; then
+    CF=$(command -v clang-format || true)
+    if [ -n "$CF" ]; then
+        echo "[pre-commit] clang-format — formatting C/H..."
+        mapfile -t c_arr <<< "$C_FILES"
+        "$CF" -i "${c_arr[@]}"
+        git add "${c_arr[@]}"
+        pass "clang-format"
+    else
+        warn "clang-format not found — skipping C formatting"
+        warn "Install with: sudo apt install clang-format"
+    fi
+fi
+
+# ── pylint: lint Python (blocks if score below threshold) ────────────────────
+if [ -n "$PY_FILES" ]; then
+    PYLINT=$(command -v pylint || command -v "$LOCAL_BIN/pylint" || true)
+    if [ -n "$PYLINT" ]; then
+        echo "[pre-commit] pylint — linting Python..."
+        mapfile -t py_arr <<< "$PY_FILES"
+        PYLINT_OUT=$("$PYLINT" \
+            --disable=C0114,C0115,C0116 \
+            --output-format=text \
+            "${py_arr[@]}" 2>&1 || true)
+
+        SCORE=$(echo "$PYLINT_OUT" | grep -oP 'rated at \K[\d.]+' || echo "")
+
+        if [ -n "$SCORE" ]; then
+            if awk "BEGIN{exit !($SCORE < $PYLINT_MIN_SCORE)}"; then
+                fail "pylint score $SCORE/10 is below $PYLINT_MIN_SCORE — fix before committing:"
+                echo "$PYLINT_OUT" | grep -E ': [EW]\d{4}' | head -20
+                exit 1
+            else
+                pass "pylint $SCORE/10"
+            fi
+        fi
+    else
+        warn "pylint not found — skipping Python linting"
+        warn "Install with: pip3 install --break-system-packages pylint"
+    fi
+fi

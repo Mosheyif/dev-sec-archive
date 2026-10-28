@@ -1,0 +1,73 @@
+# Ignore everything first
+*
+
+# Do not ignore directories (except IDE folders)
+!*/
+.idea/
+
+# Explicitly ignore compiled binaries and large files everywhere
+*.o
+*.so
+*.a
+*.out
+*.bin
+*.class
+*.sav
+*.vdi
+*.iso
+bin/
+build/
+.cache/
+
+# Do not ignore C source and headers, EXCEPT inside reversing
+!*.c
+!*.h
+reversing/**/*.c
+reversing/**/*.h
+
+# Do not ignore specific assembly, markdown, and config files
+!*.asm
+!*.s
+!*.md
+!*.html
+!Makefile
+!Dockerfile
+!*.yml
+!*.yaml
+!*.conf
+!*.wxs
+!*.vbs
+!requirements.txt
+!*.toml
+
+# Allow Python only in explicit directories, excluding utils/src/attack.py
+!python/**/*.py
+!networking/**/*.py
+!cyber/**/*.py
+!ctf/**/*.py
+utils/src/attack.py
+
+# Allow shell scripts in cyber and ctf projects
+!cyber/**/*.sh
+!ctf/**/*.sh
+
+# Block the entire inf_osint working directory (output files, wordlists, terminals, etc.)
+ctf/forensics/inf_osint/
+
+# Block HTML inside ctf/forensics — those are challenge artifacts, not code
+ctf/forensics/**/*.html
+
+# Explicitly block wordlists and virtual environments
+rockyou.txt
+*rockyou*.txt
+*directory-list*.txt
+venv/
+.venv/
+.myfuncs
+
+# Keep config and hook files tracked
+!/.gitignore
+!**/.gitignore
+!/.clang-format
+!/.githooks/
+!/.githooks/pre-commit

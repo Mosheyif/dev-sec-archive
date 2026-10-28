@@ -1,0 +1,45 @@
+services:
+  gateway_node:
+    build: .
+    container_name: gateway
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    command: sleep infinity
+    networks:
+      mitm_lab:
+        ipv4_address: 10.0.0.254
+
+  victim_node:
+    build: .
+    container_name: victim
+    cap_add:
+      - NET_ADMIN
+    command: >
+      bash -c "ip route replace default via 10.0.0.254 &&
+      sleep infinity"
+    networks:
+      mitm_lab:
+        ipv4_address: 10.0.0.20
+
+  attacker_node:
+    build: .
+    container_name: attacker
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+    command: sleep infinity
+    volumes:
+      - ./:/opt/scripts
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro    
+    networks:
+      mitm_lab:
+        ipv4_address: 10.0.0.10
+
+networks:
+  mitm_lab:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24

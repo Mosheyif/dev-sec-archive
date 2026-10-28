@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="PuTTY Persistence" Language="1033" Version="1.0.0.0" Manufacturer="Infinity Labs" UpgradeCode="E75AC323-A7DA-460B-B853-2EDEAAC6BEF4">
+        <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+        <MediaTemplate EmbedCab="yes" />
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="INSTALLFOLDER" Name="PuTTY_Custom" />
+            </Directory>
+        </Directory>
+
+        <DirectoryRef Id="INSTALLFOLDER">
+            <!-- Component 1: Per-Machine (File Installation) -->
+            <Component Id="ExecutableComponent" Guid="3A38706E-F634-4530-9005-B13BD7CC7115">
+                <File Id="PuttyEXE" Source="putty.exe" KeyPath="yes" />
+            </Component>
+
+            <!-- Component 2: Per-User (Registry Persistence) -->
+            <Component Id="RegistryComponent" Guid="72A999D5-62CD-4C70-98E0-9E11AC074094">
+                <RegistryValue Root="HKCU" 
+                               Key="Software\Microsoft\Windows\CurrentVersion\Run" 
+                               Name="PuTTY_AutoStart" 
+                               Value="[INSTALLFOLDER]putty.exe"
+                               Type="string" 
+                               KeyPath="yes" 
+                               Action="write" />
+            </Component>
+        </DirectoryRef>
+
+        <Feature Id="ProductFeature" Title="PuTTY Setup" Level="1">
+            <ComponentRef Id="ExecutableComponent" />
+            <ComponentRef Id="RegistryComponent" />
+        </Feature>
+    </Product>
+</Wix>

@@ -1,0 +1,9 @@
+# clang-format style matching the project's existing C code:
+# Allman braces, tab indentation, right-aligned pointer operator.
+BasedOnStyle:      LLVM
+IndentWidth:       4
+UseTab:            ForIndentation
+TabWidth:          4
+BreakBeforeBraces: Allman
+PointerAlignment:  Right
+ColumnLimit:       100
